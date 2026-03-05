@@ -1,0 +1,265 @@
+:root {
+  --bg: #f4f6f8;
+  --bg-soft: #ffffff;
+  --surface: #ffffff;
+  --text: #1d2430;
+  --muted: #5f6b7b;
+  --line: #d9dee7;
+  --accent: #d64045;
+  --accent-soft: #ffe9ea;
+  --green: #2f9e44;
+  --green-soft: #e8f7ec;
+  --blue: #1f6feb;
+  --blue-soft: #e9f1ff;
+  --purple: #7c4dff;
+  --purple-soft: #f0eaff;
+  --card-shadow: 0 10px 30px rgba(19, 35, 64, 0.08);
+  --radius: 14px;
+  --transition: 0.3s ease;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; }
+
+body {
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  background: linear-gradient(180deg, #f7f8fb 0%, var(--bg) 100%);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+a { color: inherit; }
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.85rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.brand {
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.03em;
+  text-decoration: none;
+}
+
+.top-nav {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.top-nav a {
+  text-decoration: none;
+  color: var(--muted);
+  padding: 0.42rem 0.75rem;
+  border-radius: 10px;
+  transition: background-color var(--transition), color var(--transition);
+}
+
+.top-nav a.active,
+.top-nav a:hover,
+.top-nav a:focus-visible {
+  color: var(--text);
+  background: #eef2f7;
+  outline: none;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.2rem 1rem 2.2rem;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 1rem;
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--card-shadow);
+  padding: 1.2rem;
+}
+
+.hero h1 { margin: 0 0 0.6rem; font-size: clamp(1.5rem, 2.5vw, 2.3rem); }
+.hero p { margin: 0; color: var(--muted); }
+
+.quick-links {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 0.9rem;
+}
+
+.quick-links a {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.6rem 0.75rem;
+  transition: transform var(--transition), border-color var(--transition);
+}
+
+.quick-links a:hover { transform: translateX(3px); border-color: #c3cedd; }
+
+.stats { display: grid; gap: 0.7rem; }
+.stats .item {
+  border-radius: 10px;
+  padding: 0.75rem;
+  border: 1px solid var(--line);
+  background: #fbfcfe;
+}
+
+.layout-archive {
+  display: grid;
+  grid-template-columns: 290px 1fr;
+  gap: 1rem;
+}
+
+aside.timeline-pane {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--card-shadow);
+  padding: 1rem 0.8rem;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  position: sticky;
+  top: 76px;
+}
+
+.timeline-title {
+  margin: 0 0 0.8rem;
+  color: var(--accent);
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.timeline { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.4rem; }
+.timeline a {
+  text-decoration: none;
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.55rem 0.65rem;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  transition: transform var(--transition), background-color var(--transition), border-color var(--transition);
+}
+.timeline a .year { color: var(--muted); min-width: 3rem; }
+.timeline a:hover,
+.timeline a:focus-visible {
+  background: #f2f5fa;
+  border-color: #d4dce8;
+  transform: translateX(3px);
+  outline: none;
+}
+
+.search-wrap { margin-bottom: 0.9rem; }
+.search-wrap input {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.7rem 0.85rem;
+  font-size: 0.97rem;
+}
+.search-wrap input:focus { outline: none; border-color: #b7c4d9; }
+
+.accordion { display: grid; gap: 0.8rem; }
+.treaty-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  border-left: 6px solid var(--accent);
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.treaty-card:hover { transform: translateY(-2px); }
+.treaty-card[data-color="green"] { border-left-color: var(--green); }
+.treaty-card[data-color="blue"] { border-left-color: var(--blue); }
+.treaty-card[data-color="purple"] { border-left-color: var(--purple); }
+
+.accordion-toggle {
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+  padding: 0.95rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.meta { display: flex; gap: 0.7rem; align-items: baseline; }
+.meta .year { color: var(--muted); font-size: 0.92rem; }
+.arrow { color: var(--muted); transition: transform var(--transition), color var(--transition); }
+.treaty-card.active .arrow { transform: rotate(90deg); color: var(--accent); }
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  border-top: 1px solid #edf1f6;
+  transition: max-height 0.35s ease;
+}
+.content-inner { padding: 0.9rem 1rem 1rem; color: #2a3442; }
+
+.person { color: #ba8b00; }
+.treaty-text { color: var(--green); }
+.treaty-history { color: var(--blue); }
+.person, .treaty-text, .treaty-history {
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.extras-grid {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+.extras-grid article { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 0.85rem; }
+
+section.block-spaced { margin-top: 1rem; }
+.cards-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.8rem; }
+.hidden { display: none; }
+
+footer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem 1.5rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 960px) {
+  .hero, .cards-3, .extras-grid { grid-template-columns: 1fr; }
+  .layout-archive { grid-template-columns: 1fr; }
+  aside.timeline-pane { position: relative; top: 0; max-height: 240px; }
+}
+
+
+.content-inner a { text-decoration-thickness: 1.5px; }
+.content-inner a:hover { opacity: 0.8; }
