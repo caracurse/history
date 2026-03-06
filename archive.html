@@ -4,7 +4,153 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Архив ядерных договоров — Лента</title>
+
+  <!-- Basic Icons -->
+  <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
+  <!-- Filled Icons -->
+  <link href="https://cdn.boxicons.com/3.0.8/fonts/filled/boxicons-filled.min.css" rel="stylesheet">
+  <!-- Brand Icons -->
+  <link href="https://cdn.boxicons.com/3.0.8/fonts/brands/boxicons-brands.min.css" rel="stylesheet">
   <link rel="stylesheet" href="assets/styles.css" />
+  <style>
+    /* === Стили для ленты времени (адаптация примера с CodePen) === */
+    .timeline-pane {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--card-shadow);
+      padding: 1rem 0.5rem;
+      max-height: calc(100vh - 120px);
+      overflow-y: auto;
+      position: sticky;
+      top: 76px;
+    }
+
+    .timeline-title {
+      margin: 0 0 1rem 0;
+      color: var(--accent);
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding-left: 1rem;
+    }
+
+    /* вертикальная линия */
+    .timeline {
+      position: relative;
+      max-width: 100%;
+      margin: 0;
+    }
+
+    .timeline::after {
+      content: '';
+      position: absolute;
+      width: 3px;
+      background: var(--line);
+      top: 10px;
+      bottom: 10px;
+      left: 30px;
+      margin-left: -1.5px;
+      border-radius: 2px;
+    }
+
+    /* контейнер для каждого события */
+    .timeline-container {
+      padding: 10px 20px 10px 60px;
+      position: relative;
+      background: transparent;
+      width: 100%;
+    }
+
+    /* кружок-маркер на линии */
+    .timeline-container::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      left: 22px;
+      top: 18px;
+      background: var(--accent);
+      border: 3px solid var(--surface);
+      border-radius: 50%;
+      z-index: 1;
+      transition: background 0.2s, transform 0.2s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .timeline-container:hover::after {
+      background: var(--text);
+      transform: scale(1.2);
+    }
+
+    /* карточка события */
+    .timeline-content {
+      padding: 0.8rem 1rem;
+      background: #f8fafd;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    }
+
+    .timeline-content h3 {
+      margin: 0 0 0.2rem 0;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .timeline-content h3 a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .timeline-content .year {
+      display: inline-block;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--accent-soft);
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      margin-bottom: 0.5rem;
+      border: 1px solid rgba(214, 64, 69, 0.15);
+    }
+
+    .timeline-content p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* убираем стандартные стили для списка */
+    .timeline ul, .timeline li {
+      all: unset;
+      display: block;
+    }
+
+    /* адаптация для мобильных (левая колонка перестаёт быть sticky) */
+    @media (max-width: 960px) {
+      .timeline-pane {
+        position: relative;
+        top: 0;
+        max-height: 340px;
+        margin-bottom: 1rem;
+      }
+      .timeline::after {
+        left: 30px;
+      }
+      .timeline-container {
+        padding-left: 60px;
+      }
+    }
+
+    /* дополнительно: плавный скролл к якорям */
+    html {
+      scroll-behavior: smooth;
+    }
+  </style>
 </head>
 <body>
   <header class="site-header">
@@ -13,7 +159,7 @@
       <nav class="top-nav" aria-label="Основная навигация">
         <a href="index.html">Главная</a>
         <a class="active" href="archive.html">Архив договоров</a>
-        <a href="documents.html">Документы</a>
+        <a href="documents.html">История</a>
         <a href="people.html">Персоналии</a>
       </nav>
     </div>
@@ -21,84 +167,186 @@
 
   <main class="container layout-archive">
     <aside class="timeline-pane" aria-label="Лента времени">
-      <h1 class="timeline-title">Лента времени</h1>
-      <nav>
-        <ul class="timeline">
-          <li><a href="#t1963"><span class="year">1963</span><span>ДЧЗИ</span></a></li>
-          <li><a href="#t1968"><span class="year">1968</span><span>ДНЯО</span></a></li>
-          <li><a href="#t1972-abm"><span class="year">1972</span><span>ПРО</span></a></li>
-          <li><a href="#t1972-salt1"><span class="year">1972</span><span>ОСВ-1</span></a></li>
-          <li><a href="#t1979"><span class="year">1979</span><span>ОСВ-2</span></a></li>
-          <li><a href="#t1987"><span class="year">1987</span><span>ДРСМД</span></a></li>
-          <li><a href="#t1991"><span class="year">1991</span><span>СНВ-1</span></a></li>
-          <li><a href="#t1993"><span class="year">1993</span><span>СНВ-2</span></a></li>
-          <li><a href="#t1996"><span class="year">1996</span><span>ДВЗЯИ</span></a></li>
-          <li><a href="#t2002"><span class="year">2002</span><span>СНП</span></a></li>
-          <li><a href="#t2010"><span class="year">2010</span><span>СНВ-3</span></a></li>
-        </ul>
-      </nav>
+      <h1 class="timeline-title">Хронология договоров</h1>
+      <div class="timeline">
+
+        <div class="timeline-container">
+          <div class="timeline-content">
+            <span class="year">1963</span>
+            <h3 style="color: gray">ДЧЗИ</h3>
+            <!-- <p>Запрет ядерных испытаний в атмосфере, космосе и под водой. Подписан Кеннеди и Хрущёвым.</p> -->
+          </div>
+        </div>
+    
+        <div class="timeline-container">
+          <div class="timeline-content">
+            <span class="year">1968</span>
+            <h3 style="color: gray">ДНЯО</h3>
+            <!-- <p>Договор о нераспространении ядерного оружия — основа режима нераспространения.</p> -->
+          </div>
+        </div>
+  
+        <div class="timeline-container">
+          <div class="timeline-content">
+            <span class="year">1972</span>
+            <h3 style="color: gray">ПРО</h3>
+            <!-- <p>Ограничение систем противоракетной обороны. Подписан Брежневым и Никсоном.</p> -->
+          </div>
+        </div>
+      
+        <div class="timeline-container">
+          <div class="timeline-content">
+            <span class="year">1972</span>
+            <h3 style="color: gray">ОСВ-1</h3>
+            <!-- <p>Первое соглашение об ограничении стратегических вооружений.</p> -->
+          </div>
+        </div>
+      
+        <div class="timeline-container">
+          <div class="timeline-content">
+            <span class="year">1979</span>
+            <h3 style="color: gray">ОСВ-2</h3>
+            <!-- <p>Количественные лимиты на носители и боезаряды. Подписан в Вене.</p> -->
+          </div>
+        </div>
+      
+        <div class="timeline-container">
+          <div class="timeline-content">
+            <span class="year">1987</span>
+            <h3 style="color: gray">ДРСМД</h3>
+            <!-- <p>Ликвидация ракет средней и меньшей дальности. Рейган и Горбачёв.</p> -->
+          </div>
+        </div>
+      
+        <div class="timeline-container">
+          <div class="timeline-content">
+            <span class="year">1991</span>
+            <h3 style="color: gray">СНВ-1</h3>
+            <!-- <p>Первое масштабное сокращение СНВ с инспекциями. Буш-ст. и Горбачёв.</p> -->
+          </div>
+        </div>
+      
+        <div class="timeline-container">
+          <div class="timeline-content">
+            <span class="year">1993</span>
+            <h3 style="color: gray">СНВ-2</h3>
+            <!-- <p>Дальнейшее сокращение. Подписан Ельциным и Бушем-ст.</p> -->
+          </div>
+        </div>
+      
+        <div class="timeline-container">
+          <div class="timeline-content">
+            <span class="year">1996</span>
+            <h3 style="color: gray">ДВЗЯИ</h3>
+            <!-- <p>Всеобъемлющий запрет ядерных испытаний, создание системы мониторинга.</p> -->
+          </div>
+        </div>
+  
+        <div class="timeline-container">
+          <div class="timeline-content">
+            <span class="year">2002</span>
+            <h3 style="color: gray">СНП</h3>
+            <!-- <p>Московский договор о сокращении стратегических наступательных потенциалов.</p> -->
+          </div>
+        </div>
+      
+        <div class="timeline-container">
+          <div class="timeline-content">
+            <span class="year">2010</span>
+            <h3 style="color: gray">СНВ-3</h3>
+            <!-- <p>Новый договор о сокращении СНВ. Подписан в Праге Обамой и Медведевым.</p> -->
+          </div>
+        </div>
+      </div>
     </aside>
 
+    <!-- Правая колонка (без изменений, кроме ссылок на персоналии) -->
     <section>
+      <h3 style="font-size: 20px;">Архив договоров</h3>
       <div class="search-wrap" aria-label="Поиск по архиву">
         <input id="searchInput" type="search" placeholder="Поиск по договорам, годам и описанию..." />
       </div>
 
       <section class="accordion" id="archive" aria-label="Архив договоров">
-        <article class="treaty-card" id="t1963" data-color="red" data-search="1963 дчзи договор о запрещении испытаний">
-          <button class="accordion-toggle" aria-expanded="false"><span class="meta"><strong>ДЧЗИ</strong><span class="year">1963</span></span><span class="arrow">▶</span></button>
-          <div class="accordion-content"><div class="content-inner">После переговоров между <a href="people.html#kennedy" class="person">Джоном Кеннеди</a> и <a href="people.html#khrushchev" class="person">Никитой Хрущёвым</a> был подписан договор о запрещении испытаний ядерного оружия в атмосфере, космосе и под водой. Полный текст: <a href="documents.html" class="treaty-text">ДЧЗИ</a>. Историческое значение: <a href="documents.html" class="treaty-history">снижение глобальной эскалации</a>.</div></div>
-        </article>
+        
+        <div class="treaty-container">
+          <!-- <p>Какой-то текст</p> -->
+          <article class="treaty-card" id="t1963" data-color="red" data-search="1963 дчзи договор о запрещении испытаний">
+            <button class="accordion-toggle" aria-expanded="false"><span class="meta"><strong>ДЧЗИ</strong><span class="year">1963</span></span><span class="arrow"><i class="bx bx-chevron-right-circle" style="color:#000000; font-size: 20px;"></i></span></button>
+            <div class="accordion-content"><div class="content-inner">После переговоров между <a href="people.html#" class="person">Джоном Кеннеди</a> и <a href="people.html#khrushchev" class="person">Никитой Хрущёвым</a> был подписан договор о запрещении испытаний ядерного оружия в атмосфере, космосе и под водой. Полный текст: <a href="documents.html" class="treaty-text">ДЧЗИ</a>. Историческое значение: <a href="documents.html" class="treaty-history">снижение глобальной эскалации</a>.</div></div>
+          </article>
+        </div>
+        
+        <div class="div treaty-container">
+          <article class="treaty-card" id="t1968" data-color="green" data-search="1968 дняо нераспространение ядерного оружия">
+            <button class="accordion-toggle" aria-expanded="false"><span class="meta"><strong>ДНЯО</strong><span class="year">1968</span></span><span class="arrow"><i class="bx bx-chevron-right-circle" style="color:#000000; font-size: 20px;"></i></span></button>
+            <div class="accordion-content"><div class="content-inner">Договор о нераспространении закрепил международную архитектуру контроля. В дискуссиях участвовали <a href="people.html" class="person">Андрей Громыко</a> и <a href="people.html" class="person">Уильям Фостер</a>. Полный текст: <a href="documents.html" class="treaty-text">ДНЯО</a>. Контекст: <a href="documents.html" class="treaty-history">период разрядки</a>.</div></div>
+          </article>
+        </div>
 
-        <article class="treaty-card" id="t1968" data-color="green" data-search="1968 дняо нераспространение ядерного оружия">
-          <button class="accordion-toggle" aria-expanded="false"><span class="meta"><strong>ДНЯО</strong><span class="year">1968</span></span><span class="arrow">▶</span></button>
-          <div class="accordion-content"><div class="content-inner">Договор о нераспространении закрепил международную архитектуру контроля. В дискуссиях участвовали <a href="people.html" class="person">Андрей Громыко</a> и <a href="people.html" class="person">Уильям Фостер</a>. Полный текст: <a href="documents.html" class="treaty-text">ДНЯО</a>. Контекст: <a href="documents.html" class="treaty-history">период разрядки</a>.</div></div>
-        </article>
+        <div class="div treaty-container">
+          <article class="treaty-card" id="t1972-abm" data-color="blue" data-search="1972 про противоракетной обороне">
+            <button class="accordion-toggle" aria-expanded="false"><span class="meta"><strong>ПРО</strong><span class="year">1972</span></span><span class="arrow"><i class="bx bx-chevron-right-circle" style="color:#000000; font-size: 20px;"></i></span></button>
+            <div class="accordion-content"><div class="content-inner">Соглашение по ПРО ограничивало национальные системы противоракетной обороны. Подписали <a href="people.html" class="person">Ричард Никсон</a> и <a href="people.html" class="person">Леонид Брежнев</a>. Полный текст: <a href="documents.html" class="treaty-text">Договор по ПРО</a>. История: <a href="documents.html" class="treaty-history">московские переговоры 1972 года</a>.</div></div>
+          </article>
+        </div>
 
-        <article class="treaty-card" id="t1972-abm" data-color="blue" data-search="1972 про противоракетной обороне">
-          <button class="accordion-toggle" aria-expanded="false"><span class="meta"><strong>ПРО</strong><span class="year">1972</span></span><span class="arrow">▶</span></button>
-          <div class="accordion-content"><div class="content-inner">Соглашение по ПРО ограничивало национальные системы противоракетной обороны. Подписали <a href="people.html" class="person">Ричард Никсон</a> и <a href="people.html" class="person">Леонид Брежнев</a>. Полный текст: <a href="documents.html" class="treaty-text">Договор по ПРО</a>. История: <a href="documents.html" class="treaty-history">московские переговоры 1972 года</a>.</div></div>
-        </article>
+        <div class="div treaty-container">
+          <article class="treaty-card" id="t1972-salt1" data-color="purple" data-search="1972 осв-1 ограничение стратегических вооружений">
+            <button class="accordion-toggle" aria-expanded="false"><span class="meta"><strong>ОСВ-1</strong><span class="year">1972</span></span><span class="arrow"><i class="bx bx-chevron-right-circle" style="color:#000000; font-size: 20px;"></i></span></button>
+            <div class="accordion-content"><div class="content-inner">ОСВ-1 стал первым масштабным шагом к ограничению стратегических наступательных вооружений. Ключевые фигуры: <a href="people.html" class="person">Генри Киссинджер</a> и <a href="people.html" class="person">Анатолий Добрынин</a>. Полный текст: <a href="documents.html" class="treaty-text">Временное соглашение ОСВ-1</a>. Историческое упоминание: <a href="documents.html" class="treaty-history">начало стратегического диалога</a>.</div></div>
+          </article>
+        </div>
 
-        <article class="treaty-card" id="t1972-salt1" data-color="purple" data-search="1972 осв-1 ограничение стратегических вооружений">
-          <button class="accordion-toggle" aria-expanded="false"><span class="meta"><strong>ОСВ-1</strong><span class="year">1972</span></span><span class="arrow">▶</span></button>
-          <div class="accordion-content"><div class="content-inner">ОСВ-1 стал первым масштабным шагом к ограничению стратегических наступательных вооружений. Ключевые фигуры: <a href="people.html" class="person">Генри Киссинджер</a> и <a href="people.html" class="person">Анатолий Добрынин</a>. Полный текст: <a href="documents.html" class="treaty-text">Временное соглашение ОСВ-1</a>. Историческое упоминание: <a href="documents.html" class="treaty-history">начало стратегического диалога</a>.</div></div>
-        </article>
+        <div class="div treaty-container">
+          <article class="treaty-card" id="t1979" data-color="red" data-search="1979 осв-2 вена">
+            <button class="accordion-toggle" aria-expanded="false"><span class="meta"><strong>ОСВ-2</strong><span class="year">1979</span></span><span class="arrow"><i class="bx bx-chevron-right-circle" style="color:#000000; font-size: 20px;"></i></span></button>
+            <div class="accordion-content"><div class="content-inner">ОСВ-2 зафиксировал количественные лимиты на носители и боезаряды. Подписанты: <a href="people.html" class="person">Джимми Картер</a> и <a href="people.html" class="person">Леонид Брежнев</a>. Полный текст: <a href="documents.html" class="treaty-text">ОСВ-2</a>. История: <a href="documents.html" class="treaty-history">Венский саммит</a>.</div></div>
+          </article>
+        </div>
 
-        <article class="treaty-card" id="t1979" data-color="red" data-search="1979 осв-2 вена">
-          <button class="accordion-toggle" aria-expanded="false"><span class="meta"><strong>ОСВ-2</strong><span class="year">1979</span></span><span class="arrow">▶</span></button>
-          <div class="accordion-content"><div class="content-inner">ОСВ-2 зафиксировал количественные лимиты на носители и боезаряды. Подписанты: <a href="people.html" class="person">Джимми Картер</a> и <a href="people.html" class="person">Леонид Брежнев</a>. Полный текст: <a href="documents.html" class="treaty-text">ОСВ-2</a>. История: <a href="documents.html" class="treaty-history">Венский саммит</a>.</div></div>
-        </article>
+        <div class="div treaty-container">
+          <article class="treaty-card" id="t1987" data-color="green" data-search="1987 дрсмд ракеты средней и малой дальности">
+            <button class="accordion-toggle" aria-expanded="false"><span class="meta"><strong>ДРСМД</strong><span class="year">1987</span></span><span class="arrow"><i class="bx bx-chevron-right-circle" style="color:#000000; font-size: 20px;"></i></span></button>
+            <div class="accordion-content"><div class="content-inner">ДРСМД впервые полностью ликвидировал целый класс ракет. Центральные фигуры: <a href="people.html#reagan" class="person">Рональд Рейган</a> и <a href="people.html#gorbachev" class="person">Михаил Горбачёв</a>. Полный текст: <a href="documents.html" class="treaty-text">ДРСМД</a>. Исторический контекст: <a href="documents.html" class="treaty-history">поздняя разрядка</a>.</div></div>
+          </article>
+        </div>
 
-        <article class="treaty-card" id="t1987" data-color="green" data-search="1987 дрсмд ракеты средней и меньшей дальности">
-          <button class="accordion-toggle" aria-expanded="false"><span class="meta"><strong>ДРСМД</strong><span class="year">1987</span></span><span class="arrow">▶</span></button>
-          <div class="accordion-content"><div class="content-inner">ДРСМД впервые полностью ликвидировал целый класс ракет. Центральные фигуры: <a href="people.html#reagan" class="person">Рональд Рейган</a> и <a href="people.html#gorbachev" class="person">Михаил Горбачёв</a>. Полный текст: <a href="documents.html" class="treaty-text">ДРСМД</a>. Исторический контекст: <a href="documents.html" class="treaty-history">поздняя разрядка</a>.</div></div>
-        </article>
+        <div class="div treaty-container">
+          <article class="treaty-card" id="t1991" data-color="blue" data-search="1991 снв-1 сокращение стратегических вооружений">
+            <button class="accordion-toggle" aria-expanded="false"><span class="meta"><strong>СНВ-1</strong><span class="year">1991</span></span><span class="arrow"><i class="bx bx-chevron-right-circle" style="color:#000000; font-size: 20px;"></i></span></button>
+            <div class="accordion-content"><div class="content-inner">СНВ-1 ввёл детальные процедуры инспекций и проверки сокращений. Подписали <a href="people.html#bush-sr" class="person">Джордж Буш-старший</a> и <a href="people.html#gorbachev" class="person">Михаил Горбачёв</a>. Полный текст: <a href="documents.html" class="treaty-text">СНВ-1</a>. Историческое упоминание: <a href="documents.html" class="treaty-history">переходный период после холодной войны</a>.</div></div>
+          </article>
+        </div>
 
-        <article class="treaty-card" id="t1991" data-color="blue" data-search="1991 снв-1 сокращение стратегических вооружений">
-          <button class="accordion-toggle" aria-expanded="false"><span class="meta"><strong>СНВ-1</strong><span class="year">1991</span></span><span class="arrow">▶</span></button>
-          <div class="accordion-content"><div class="content-inner">СНВ-1 ввёл детальные процедуры инспекций и проверки сокращений. Подписали <a href="people.html#bush-sr" class="person">Джордж Буш-старший</a> и <a href="people.html#gorbachev" class="person">Михаил Горбачёв</a>. Полный текст: <a href="documents.html" class="treaty-text">СНВ-1</a>. Историческое упоминание: <a href="documents.html" class="treaty-history">переходный период после холодной войны</a>.</div></div>
-        </article>
+        <div class="div treaty-container">
+          <article class="treaty-card" id="t1993" data-color="purple" data-search="1993 снв-2">
+            <button class="accordion-toggle" aria-expanded="false"><span class="meta"><strong>СНВ-2</strong><span class="year">1993</span></span><span class="arrow"><i class="bx bx-chevron-right-circle" style="color:#000000; font-size: 20px;"></i></span></button>
+            <div class="accordion-content"><div class="content-inner">СНВ-2 продолжил сокращение стратегических наступательных систем. Центральные политики: <a href="people.html" class="person">Борис Ельцин</a> и <a href="people.html#bush-sr" class="person">Джордж Буш-старший</a>. Полный текст: <a href="documents.html" class="treaty-text">СНВ-2</a>. Исторический контекст: <a href="documents.html" class="treaty-history">сложная ратификация в 1990-е</a>.</div></div>
+          </article>
+        </div>
 
-        <article class="treaty-card" id="t1993" data-color="purple" data-search="1993 снв-2">
-          <button class="accordion-toggle" aria-expanded="false"><span class="meta"><strong>СНВ-2</strong><span class="year">1993</span></span><span class="arrow">▶</span></button>
-          <div class="accordion-content"><div class="content-inner">СНВ-2 продолжил сокращение стратегических наступательных систем. Центральные политики: <a href="people.html" class="person">Борис Ельцин</a> и <a href="people.html#bush-sr" class="person">Джордж Буш-старший</a>. Полный текст: <a href="documents.html" class="treaty-text">СНВ-2</a>. Исторический контекст: <a href="documents.html" class="treaty-history">сложная ратификация в 1990-е</a>.</div></div>
-        </article>
+        <div class="div treaty-container">
+          <article class="treaty-card" id="t1996" data-color="red" data-search="1996 двзяи всеобъемлющий запрет испытаний">
+            <button class="accordion-toggle" aria-expanded="false"><span class="meta"><strong>ДВЗЯИ</strong><span class="year">1996</span></span><span class="arrow"><i class="bx bx-chevron-right-circle" style="color:#000000; font-size: 20px;"></i></span></button>
+            <div class="accordion-content"><div class="content-inner">ДВЗЯИ запретил ядерные испытания во всех средах и усилил режим международного мониторинга. Участники: <a href="people.html" class="person">Бутрос Бутрос-Гали</a> и <a href="people.html" class="person">делегации ООН</a>. Полный текст: <a href="documents.html" class="treaty-text">ДВЗЯИ</a>. История: <a href="documents.html" class="treaty-history">резолюция Генассамблеи</a>.</div></div>
+          </article>
+        </div>
 
-        <article class="treaty-card" id="t1996" data-color="red" data-search="1996 двзяи всеобъемлющий запрет испытаний">
-          <button class="accordion-toggle" aria-expanded="false"><span class="meta"><strong>ДВЗЯИ</strong><span class="year">1996</span></span><span class="arrow">▶</span></button>
-          <div class="accordion-content"><div class="content-inner">ДВЗЯИ запретил ядерные испытания во всех средах и усилил режим международного мониторинга. Участники: <a href="people.html" class="person">Бутрос Бутрос-Гали</a> и <a href="people.html" class="person">делегации ООН</a>. Полный текст: <a href="documents.html" class="treaty-text">ДВЗЯИ</a>. История: <a href="documents.html" class="treaty-history">резолюция Генассамблеи</a>.</div></div>
-        </article>
+        <div class="div treaty-container">
+          <article class="treaty-card" id="t2002" data-color="green" data-search="2002 снп московский договор">
+            <button class="accordion-toggle" aria-expanded="false"><span class="meta"><strong>СНП</strong><span class="year">2002</span></span><span class="arrow"><i class="bx bx-chevron-right-circle" style="color:#000000; font-size: 20px;"></i></span></button>
+            <div class="accordion-content"><div class="content-inner">СНП (Московский договор) зафиксировал новые уровни сокращения развёрнутых боезарядов. Подписан <a href="people.html" class="person">Владимиром Путиным</a> и <a href="people.html" class="person">Джорджем Бушем-младшим</a>. Полный текст: <a href="documents.html" class="treaty-text">СНП</a>. История: <a href="documents.html" class="treaty-history">новый этап отношений после 2001 года</a>.</div></div>
+          </article>
+        </div>
 
-        <article class="treaty-card" id="t2002" data-color="green" data-search="2002 снп московский договор">
-          <button class="accordion-toggle" aria-expanded="false"><span class="meta"><strong>СНП</strong><span class="year">2002</span></span><span class="arrow">▶</span></button>
-          <div class="accordion-content"><div class="content-inner">СНП (Московский договор) зафиксировал новые уровни сокращения развёрнутых боезарядов. Подписан <a href="people.html" class="person">Владимиром Путиным</a> и <a href="people.html" class="person">Джорджем Бушем-младшим</a>. Полный текст: <a href="documents.html" class="treaty-text">СНП</a>. История: <a href="documents.html" class="treaty-history">новый этап отношений после 2001 года</a>.</div></div>
-        </article>
+        <div class="div treaty-container">
+          <article class="treaty-card" id="t2010" data-color="blue" data-search="2010 снв-3 прага">
+            <button class="accordion-toggle" aria-expanded="false"><span class="meta"><strong>СНВ-3</strong><span class="year">2010</span></span><span class="arrow"><i class="bx bx-chevron-right-circle" style="color:#000000; font-size: 20px;"></i></span></button>
+            <div class="accordion-content"><div class="content-inner">СНВ-3 обновил систему ограничений и проверок стратегических вооружений XXI века. Подписанты: <a href="people.html#obama" class="person">Барак Обама</a> и <a href="people.html" class="person">Дмитрий Медведев</a>. Полный текст: <a href="documents.html" class="treaty-text">Новый СНВ</a>. История: <a href="documents.html" class="treaty-history">Пражский саммит</a>.</div></div>
+          </article>
+        </div>
 
-        <article class="treaty-card" id="t2010" data-color="blue" data-search="2010 снв-3 прага">
-          <button class="accordion-toggle" aria-expanded="false"><span class="meta"><strong>СНВ-3</strong><span class="year">2010</span></span><span class="arrow">▶</span></button>
-          <div class="accordion-content"><div class="content-inner">СНВ-3 обновил систему ограничений и проверок стратегических вооружений XXI века. Подписанты: <a href="people.html#obama" class="person">Барак Обама</a> и <a href="people.html" class="person">Дмитрий Медведев</a>. Полный текст: <a href="documents.html" class="treaty-text">Новый СНВ</a>. История: <a href="documents.html" class="treaty-history">Пражский саммит</a>.</div></div>
-        </article>
       </section>
 
       <section class="extras-grid" aria-label="Дополнительный контент">

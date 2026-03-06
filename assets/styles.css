@@ -174,7 +174,7 @@ aside.timeline-pane {
   outline: none;
 }
 
-.search-wrap { margin-bottom: 0.9rem; }
+.search-wrap { margin: 0.9rem; }
 .search-wrap input {
   width: 100%;
   border: 1px solid var(--line);
@@ -188,8 +188,6 @@ aside.timeline-pane {
 .treaty-card {
   background: var(--surface);
   border-radius: var(--radius);
-  border: 1px solid var(--line);
-  border-left: 6px solid var(--accent);
   box-shadow: var(--card-shadow);
   overflow: hidden;
   transition: transform var(--transition), box-shadow var(--transition);
@@ -229,7 +227,7 @@ aside.timeline-pane {
 .treaty-text { color: var(--green); }
 .treaty-history { color: var(--blue); }
 .person, .treaty-text, .treaty-history {
-  font-weight: 600;
+  font-weight: 500;
   text-decoration: underline;
   text-underline-offset: 2px;
 }
