@@ -3,45 +3,534 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Архив ядерных договоров — Документы</title>
-  <link rel="stylesheet" href="assets/styles.css" />
+  <title>Архив ядерных договоров — Визуальная хроника</title>
+
+  <!-- Boxicons -->
+  <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
+  <link href="https://cdn.boxicons.com/3.0.8/fonts/filled/boxicons-filled.min.css" rel="stylesheet">
+  <link href="https://cdn.boxicons.com/3.0.8/fonts/brands/boxicons-brands.min.css" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      background: #f0f4f8;
+      color: #0a2a3b;
+      line-height: 1.5;
+    }
+
+    .site-header {
+      background: #0a2e3f;
+      color: white;
+      padding: 0.9rem 2rem;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .header-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .brand {
+      font-size: 1.7rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffe6b3, #ffbc6e);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      text-decoration: none;
+      letter-spacing: -0.3px;
+    }
+
+    .top-nav {
+      display: flex;
+      gap: 1.8rem;
+      flex-wrap: wrap;
+    }
+
+    .top-nav a {
+      color: #d9e9f0;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.2s;
+      padding-bottom: 4px;
+    }
+
+    .top-nav a.active,
+    .top-nav a:hover {
+      color: #ffb347;
+      border-bottom: 2px solid #ffb347;
+    }
+
+    .container {
+      max-width: 1300px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+    }
+
+    .hero-panel {
+      background: white;
+      border-radius: 32px;
+      padding: 2rem 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 12px 24px -12px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e2edf2;
+    }
+
+    .hero-panel h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      background: linear-gradient(130deg, #1e5a72, #0a2e3f);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-panel p {
+      color: #2c5a6e;
+      font-size: 1.05rem;
+    }
+
+    .search-wrap {
+      margin-bottom: 1.8rem;
+    }
+
+    #treaty-search {
+      width: 100%;
+      padding: 1rem 1.3rem;
+      font-size: 1rem;
+      border: 1px solid #cbdbe0;
+      border-radius: 60px;
+      background: white;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+      transition: all 0.2s;
+    }
+
+    #treaty-search:focus {
+      outline: none;
+      border-color: #ff9f3d;
+      box-shadow: 0 0 0 4px rgba(255, 159, 61, 0.15);
+    }
+
+    .treaties-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.3rem;
+    }
+
+    .treaty-card {
+      background: white;
+      border-radius: 28px;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.05);
+      border-left: 8px solid;
+      transition: all 0.2s;
+      overflow: hidden;
+    }
+
+    /* цветовые акценты для договоров */
+    .treaty-card[data-color="blue"] { border-left-color: #2c7da0; }
+    .treaty-card[data-color="red"] { border-left-color: #bc4e2c; }
+    .treaty-card[data-color="green"] { border-left-color: #2f855a; }
+    .treaty-card[data-color="purple"] { border-left-color: #8b5cf6; }
+    .treaty-card[data-color="amber"] { border-left-color: #e67e22; }
+
+    .accordion-toggle {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 1.8rem;
+      cursor: pointer;
+      background: #ffffff;
+      transition: background 0.2s;
+    }
+
+    .accordion-toggle:hover {
+      background: #fef8f0;
+    }
+
+    .treaty-summary {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      flex: 1;
+    }
+
+    .treaty-name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #0f2e3f;
+      letter-spacing: -0.2px;
+    }
+
+    .treaty-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+      margin-top: 0.3rem;
+      font-size: 0.9rem;
+      color: #567d92;
+    }
+
+    .treaty-meta span {
+      background: #eef3f8;
+      padding: 0.2rem 0.8rem;
+      border-radius: 40px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .arrow {
+      font-size: 2rem;
+      color: #4b6f86;
+      transition: transform 0.25s;
+    }
+
+    .treaty-card.active .arrow i {
+      transform: rotate(90deg);
+    }
+
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+      background: #fefefe;
+      border-top: 1px solid #e9f0f4;
+    }
+
+    .treaty-card.active .accordion-content {
+      max-height: 750px;
+    }
+
+    /* галерея изображений вместо текста */
+    .visual-gallery {
+      padding: 1.8rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+      align-items: center;
+      background: #ffffff;
+    }
+
+    .vis-card {
+      background: #f9fcff;
+      border-radius: 24px;
+      padding: 0.9rem;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.05);
+      text-align: center;
+      width: 280px;
+      transition: all 0.2s;
+      border: 1px solid #e2edf2;
+    }
+
+    .vis-card img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 18px;
+      background: #f2f6f9;
+      display: block;
+      margin-bottom: 0.7rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.02);
+    }
+
+    .vis-caption {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #2a6b8f;
+      background: #eef3fa;
+      display: inline-block;
+      padding: 0.2rem 1rem;
+      border-radius: 30px;
+    }
+
+    .treaty-svg-illus {
+      width: 100%;
+      background: #eef2f7;
+      border-radius: 20px;
+      padding: 0.5rem;
+    }
+
+    @media (max-width: 680px) {
+      .visual-gallery {
+        flex-direction: column;
+      }
+      .accordion-toggle {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.6rem;
+      }
+      .treaty-name {
+        font-size: 1.3rem;
+      }
+      .arrow {
+        align-self: center;
+      }
+    }
+
+    footer {
+      background: #e2eef5;
+      text-align: center;
+      padding: 1.8rem;
+      margin-top: 3rem;
+      color: #2b5e7a;
+      font-size: 0.85rem;
+    }
+
+    .badge-icon {
+      font-size: 1rem;
+      vertical-align: middle;
+    }
+  </style>
 </head>
 <body>
   <header class="site-header">
     <div class="header-inner">
-      <a class="brand" href="index.html">Красная Кнопка</a>
+      <a class="brand" href="index.html">Красная кнопка</a>
       <nav class="top-nav" aria-label="Основная навигация">
         <a href="index.html">Главная</a>
         <a href="archive.html">История</a>
-        <a class="active" href="documents.html">Архив договоров</a>
-        <a href="people.html">Персоналии</a>
-        <a href="links.html">Полезные ссылки</a>
+        <a href="documents.html">Архив договоров</a>
+        <a class="active" href="people.html">Договоры</a>
+        <a href="links.html">Ссылки</a>
       </nav>
     </div>
   </header>
 
   <main class="container">
-    <section class="panel">
-      <h1>Документы и материалы</h1>
-      <p>Раздел с дополнительным контентом для углублённого изучения истории международных ядерных соглашений.</p>
-    </section>
+    <div class="hero-panel">
+      <h1>Основные ядерные договоры</h1>
+      <p>Хроника ограничений, разоружения и нераспространения. Нажмите на любой договор — внутри вас ждут визуальные материалы: исторические снимки, инфографика, схемы вооружений и карты.</p>
+    </div>
 
-    <section class="cards-3 block-spaced">
-      <article class="panel">
-        <h2>Тексты договоров</h2>
-        <p>Сводка официальных версий документов, приложений и сопутствующих протоколов для сопоставления формулировок.</p>
+    <div class="search-wrap">
+      <input type="text" id="treaty-search" placeholder="🔍 Поиск по названию договора, году или ключевым участникам (СССР, США, ДНЯО, СНВ...)" />
+    </div>
+
+    <section class="treaties-list" id="treatiesContainer">
+      <!-- Договор о нераспространении ядерного оружия (ДНЯО) -->
+      <article class="treaty-card" data-color="blue" data-treaty='{"name":"ДНЯО","year":"1968"}'>
+        <div class="accordion-toggle">
+          <div class="treaty-summary">
+            <div class="treaty-name">Договор о нераспространении ядерного оружия (ДНЯО)</div>
+            <div class="treaty-meta">
+              <span><i class='bx bx-calendar'></i> 1968 год, открыт для подписания</span>
+              <span><i class='bx bx-globe'></i> 191 государство-участник</span>
+              <span><i class='bx bx-shield'></i> Базовый столп нераспространения</span>
+            </div>
+          </div>
+          <span class="arrow"><i class='bx bx-chevron-right-circle' style="font-size: 28px;"></i></span>
+        </div>
+        <div class="accordion-content">
+          <div class="visual-gallery">
+            <div class="vis-card">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 240'%3E%3Crect width='400' height='240' fill='%231e5a72'/%3E%3Ctext x='50%25' y='40%25' font-size='20' fill='white' text-anchor='middle' font-family='monospace'%3E📸 Фото подписания ДНЯО%3C/text%3E%3Ctext x='50%25' y='60%25' font-size='14' fill='%23ffd966' text-anchor='middle'%3E1 июля 1968, Лондон%3C/text%3E%3C/svg%3E" alt="Подписание ДНЯО 1968">
+              <div class="vis-caption">Церемония открытия для подписания, 1968 г.</div>
+            </div>
+            <div class="vis-card">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 240'%3E%3Crect width='400' height='240' fill='%232b6f48'/%3E%3Ctext x='50%25' y='40%25' font-size='18' fill='white' text-anchor='middle'%3E🗺️ Карта ядерного статуса%3C/text%3E%3Ctext x='50%25' y='65%25' font-size='12' fill='%23e0f0e0' text-anchor='middle'%3Eстраны-участницы ДНЯО (191)%3C/text%3E%3C/svg%3E" alt="Карта нераспространения">
+              <div class="vis-caption">Глобальная карта: 191 государство-участник</div>
+            </div>
+            <div class="vis-card">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 240'%3E%3Crect width='400' height='240' fill='%23384e6b'/%3E%3Ctext x='50%25' y='40%25' font-size='18' fill='white' text-anchor='middle'%3E⚛️ Инфографика: три столпа%3C/text%3E%3Ctext x='50%25' y='65%25' font-size='12' fill='%23ffd966' text-anchor='middle'%3EНераспространение — Разоружение — Мирный атом%3C/text%3E%3C/svg%3E" alt="Три столпа ДНЯО">
+              <div class="vis-caption">Ключевые принципы: нераспространение, разоружение, ядерная энергия</div>
+            </div>
+          </div>
+        </div>
       </article>
-      <article class="panel">
-        <h2>Архивные публикации</h2>
-        <p>Подборка аналитики, дипломатических отчётов, материалов прессы и экспертных комментариев по эпохам.</p>
+
+      <!-- Договор об ограничении систем ПРО (1972) -->
+      <article class="treaty-card" data-color="red" data-treaty='{"name":"Договор ПРО","year":"1972"}'>
+        <div class="accordion-toggle">
+          <div class="treaty-summary">
+            <div class="treaty-name">Договор об ограничении систем противоракетной обороны (ПРО)</div>
+            <div class="treaty-meta">
+              <span><i class='bx bx-calendar'></i> 1972 (СССР и США)</span>
+              <span><i class='bx bx-target-lock'></i> Ограничение ПРО до двух районов</span>
+            </div>
+          </div>
+          <span class="arrow"><i class='bx bx-chevron-right-circle'></i></span>
+        </div>
+        <div class="accordion-content">
+          <div class="visual-gallery">
+            <div class="vis-card">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 240'%3E%3Crect width='400' height='240' fill='%238b3a2c'/%3E%3Ctext x='50%25' y='40%25' font-size='18' fill='white' text-anchor='middle'%3E🛡️ Подписание договора ПРО%3C/text%3E%3Ctext x='50%25' y='65%25' font-size='12' fill='%23ffcd94' text-anchor='middle'%3EБрежнев и Никсон, Москва, 1972%3C/text%3E%3C/svg%3E" alt="Подписание ПРО 1972">
+              <div class="vis-caption">Леонид Брежнев и Ричард Никсон подписывают договор</div>
+            </div>
+            <div class="vis-card">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 240'%3E%3Crect width='400' height='240' fill='%233d5a80'/%3E%3Ctext x='50%25' y='40%25' font-size='18' fill='white' text-anchor='middle'%3E📊 Схема: гонка ПРО%3C/text%3E%3Ctext x='50%25' y='65%25' font-size='12' fill='%23f7d44a' text-anchor='middle'%3Eограничение систем перехватчиков%3C/text%3E%3C/svg%3E" alt="Инфографика систем ПРО">
+              <div class="vis-caption">Принцип «уязвимости» — ограничение противоракет</div>
+            </div>
+          </div>
+        </div>
       </article>
-      <article class="panel">
-        <h2>Карты и схемы</h2>
-        <p>Визуальные материалы о стратегических направлениях, инфраструктуре контроля и контексте холодной войны.</p>
+
+      <!-- Договор СНВ-1 (1991) -->
+      <article class="treaty-card" data-color="green" data-treaty='{"name":"СНВ-1","year":"1991"}'>
+        <div class="accordion-toggle">
+          <div class="treaty-summary">
+            <div class="treaty-name">СНВ-1 (Договор о сокращении стратегических наступательных вооружений)</div>
+            <div class="treaty-meta">
+              <span><i class='bx bx-calendar'></i> 1991, подписан Горбачёвым и Бушем-старшим</span>
+              <span><i class='bx bx-rocket'></i> Сокращение ядерных арсеналов на 30%</span>
+            </div>
+          </div>
+          <span class="arrow"><i class='bx bx-chevron-right-circle'></i></span>
+        </div>
+        <div class="accordion-content">
+          <div class="visual-gallery">
+            <div class="vis-card">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 240'%3E%3Crect width='400' height='240' fill='%231f5e3a'/%3E%3Ctext x='50%25' y='40%25' font-size='18' fill='white' text-anchor='middle'%3E🤝 Историческое рукопожатие%3C/text%3E%3Ctext x='50%25' y='65%25' font-size='13' fill='%23ffdfa5' text-anchor='middle'%3EГорбачёв и Буш — Москва, 1991%3C/text%3E%3C/svg%3E" alt="Горбачев Буш СНВ-1">
+              <div class="vis-caption">Церемония подписания в Кремле, 31 июля 1991</div>
+            </div>
+            <div class="vis-card">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 240'%3E%3Crect width='400' height='240' fill='%2344637b'/%3E%3Ctext x='50%25' y='40%25' font-size='18' fill='white' text-anchor='middle'%3E📉 Динамика сокращений%3C/text%3E%3Ctext x='50%25' y='65%25' font-size='12' fill='%23ffc857' text-anchor='middle'%3Eснижение боеголовок с 10 563 до ~8 000%3C/text%3E%3C/svg%3E" alt="график сокращения СНВ-1">
+              <div class="vis-caption">Визуализация: уменьшение стратегических носителей</div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Договор о ликвидации ракет средней и меньшей дальности (РСМД) 1987 -->
+      <article class="treaty-card" data-color="purple" data-treaty='{"name":"ДРСМД","year":"1987"}'>
+        <div class="accordion-toggle">
+          <div class="treaty-summary">
+            <div class="treaty-name">Договор о ликвидации ракет средней и меньшей дальности (РСМД / INF)</div>
+            <div class="treaty-meta">
+              <span><i class='bx bx-calendar'></i> 8 декабря 1987, Вашингтон</span>
+              <span><i class='bx bx-trash'></i> Уничтожение целого класса ракет</span>
+            </div>
+          </div>
+          <span class="arrow"><i class='bx bx-chevron-right-circle'></i></span>
+        </div>
+        <div class="accordion-content">
+          <div class="visual-gallery">
+            <div class="vis-card">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 240'%3E%3Crect width='400' height='240' fill='%2364337a'/%3E%3Ctext x='50%25' y='40%25' font-size='18' fill='white' text-anchor='middle'%3E🖋️ Подписание РСМД%3C/text%3E%3Ctext x='50%25' y='65%25' font-size='12' fill='%23ffd966' text-anchor='middle'%3EРейган и Горбачёв, Белый дом%3C/text%3E%3C/svg%3E" alt="Рейган Горбачев РСМД">
+              <div class="vis-caption">Рональд Рейган и Михаил Горбачёв подписывают исторический договор</div>
+            </div>
+            <div class="vis-card">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 240'%3E%3Crect width='400' height='240' fill='%232f6b6f'/%3E%3Ctext x='50%25' y='40%25' font-size='18' fill='white' text-anchor='middle'%3E🚀 Уничтожение ракет SS-20%3C/text%3E%3Ctext x='50%25' y='65%25' font-size='12' fill='%23ffcf8a' text-anchor='middle'%3Eликвидация 2692 ракет (СССР и США)%3C/text%3E%3C/svg%3E" alt="Ликвидация ракет">
+              <div class="vis-caption">Фото инспекции: уничтожение советских РСД-10 «Пионер»</div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Договор СНВ-3 (2010) -->
+      <article class="treaty-card" data-color="amber" data-treaty='{"name":"СНВ-3","year":"2010"}'>
+        <div class="accordion-toggle">
+          <div class="treaty-summary">
+            <div class="treaty-name">СНВ-3 (Прагский договор)</div>
+            <div class="treaty-meta">
+              <span><i class='bx bx-calendar'></i> 8 апреля 2010, Прага</span>
+              <span><i class='bx bx-line-chart'></i> Новые ограничения на боезаряды и носители</span>
+            </div>
+          </div>
+          <span class="arrow"><i class='bx bx-chevron-right-circle'></i></span>
+        </div>
+        <div class="accordion-content">
+          <div class="visual-gallery">
+            <div class="vis-card">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 240'%3E%3Crect width='400' height='240' fill='%23bf6f00'/%3E%3Ctext x='50%25' y='40%25' font-size='18' fill='white' text-anchor='middle'%3E🌍 Подписание СНВ-3%3C/text%3E%3Ctext x='50%25' y='65%25' font-size='12' fill='%23fff0c0' text-anchor='middle'%3EПрезиденты Медведев и Обама%3C/text%3E%3C/svg%3E" alt="Медведев Обама СНВ-3">
+              <div class="vis-caption">Дмитрий Медведев и Барак Обама, 2010 г.</div>
+            </div>
+            <div class="vis-card">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 240'%3E%3Crect width='400' height='240' fill='%23367282'/%3E%3Ctext x='50%25' y='40%25' font-size='18' fill='white' text-anchor='middle'%3E📊 Лимиты СНВ-3%3C/text%3E%3Ctext x='50%25' y='65%25' font-size='12' fill='%23ffd966' text-anchor='middle'%3E1550 боезарядов, 700 носителей%3C/text%3E%3C/svg%3E" alt="Инфографика СНВ-3">
+              <div class="vis-caption">Визуализация новых потолков вооружений</div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Московский договор о частичном запрещении испытаний 1963 -->
+      <article class="treaty-card" data-color="blue" data-treaty='{"name":"Договор о запрещении испытаний","year":"1963"}'>
+        <div class="accordion-toggle">
+          <div class="treaty-summary">
+            <div class="treaty-name">Договор о запрещении испытаний ядерного оружия в трёх средах</div>
+            <div class="treaty-meta">
+              <span><i class='bx bx-calendar'></i> 5 августа 1963, Москва</span>
+              <span><i class='bx bx-water'></i> Атмосфера, космос, под водой</span>
+            </div>
+          </div>
+          <span class="arrow"><i class='bx bx-chevron-right-circle'></i></span>
+        </div>
+        <div class="accordion-content">
+          <div class="visual-gallery">
+            <div class="vis-card">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 240'%3E%3Crect width='400' height='240' fill='%233b6978'/%3E%3Ctext x='50%25' y='40%25' font-size='18' fill='white' text-anchor='middle'%3E☁️ Запрет атмосферных испытаний%3C/text%3E%3Ctext x='50%25' y='65%25' font-size='12' fill='%23ffe0a3' text-anchor='middle'%3EГромыко, Раск, Хейлшем — Кремль%3C/text%3E%3C/svg%3E" alt="Подписание договора 1963">
+              <div class="vis-caption">Министры иностранных дел СССР, США и Великобритании</div>
+            </div>
+            <div class="vis-card">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 240'%3E%3Crect width='400' height='240' fill='%23535e6b'/%3E%3Ctext x='50%25' y='40%25' font-size='18' fill='white' text-anchor='middle'%3E💥 Последствия испытаний%3C/text%3E%3Ctext x='50%25' y='65%25' font-size='12' fill='%23ffbc6e' text-anchor='middle'%3EФото ядерного гриба над атоллом%3C/text%3E%3C/svg%3E" alt="Ядерные испытания">
+              <div class="vis-caption">Исторический снимок: переход к подземным испытаниям</div>
+            </div>
+          </div>
+        </div>
       </article>
     </section>
   </main>
 
-  <footer>Раздел дополнительных источников и исследовательских материалов.</footer>
+  <footer></footer>
+
+  <script>
+    (function() {
+      // Аккордеон
+      document.querySelectorAll('.treaty-card .accordion-toggle').forEach(toggle => {
+        toggle.addEventListener('click', function(e) {
+          const card = this.closest('.treaty-card');
+          if (card) card.classList.toggle('active');
+        });
+      });
+
+      // Сортировка по названию договора
+      function sortTreaties() {
+        const container = document.querySelector('.treaties-list');
+        if (!container) return;
+        const cards = Array.from(container.children);
+        cards.sort((a, b) => {
+          const nameA = a.querySelector('.treaty-name')?.textContent.trim() || '';
+          const nameB = b.querySelector('.treaty-name')?.textContent.trim() || '';
+          return nameA.localeCompare(nameB, 'ru');
+        });
+        cards.forEach(card => container.appendChild(card));
+      }
+
+      // Поиск
+      const searchInput = document.getElementById('treaty-search');
+      if (searchInput) {
+        searchInput.addEventListener('input', function() {
+          const query = this.value.toLowerCase().trim();
+          const cards = document.querySelectorAll('.treaty-card');
+          cards.forEach(card => {
+            const text = card.textContent.toLowerCase();
+            if (text.includes(query) || query === '') {
+              card.style.display = '';
+            } else {
+              card.style.display = 'none';
+            }
+          });
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', sortTreaties);
+      } else {
+        sortTreaties();
+      }
+    })();
+  </script>
 </body>
 </html>
+```
