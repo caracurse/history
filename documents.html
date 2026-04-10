@@ -1,3 +1,6 @@
+Вот адаптированная HTML-страница, которая использует предоставленные стили, сохраняя всю функциональность и визуальное наполнение:
+
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -9,219 +12,239 @@
   <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
   <link href="https://cdn.boxicons.com/3.0.8/fonts/filled/boxicons-filled.min.css" rel="stylesheet">
   <link href="https://cdn.boxicons.com/3.0.8/fonts/brands/boxicons-brands.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="assets/styles.css"> 
+  
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    /* === Основные стили (из предоставленного блока) === */
+    :root {
+      --bg: #f4f6f8;
+      --bg-soft: #ffffff;
+      --surface: #ffffff;
+      --text: #1d2430;
+      --muted: #5f6b7b;
+      --line: #d9dee7;
+      --accent: #d64045;
+      --accent-soft: #ffe9ea;
+      --green: #2f9e44;
+      --green-soft: #e8f7ec;
+      --blue: #1f6feb;
+      --blue-soft: #e9f1ff;
+      --purple: #7c4dff;
+      --purple-soft: #f0eaff;
+      --card-shadow: 0 10px 30px rgba(19, 35, 64, 0.08);
+      --radius: 14px;
+      --transition: 0.3s ease;
     }
+
+    * { box-sizing: border-box; }
+
+    html, body { margin: 0; padding: 0; }
 
     body {
-      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-      background: #f0f4f8;
-      color: #0a2a3b;
-      line-height: 1.5;
+      font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: linear-gradient(180deg, #f7f8fb 0%, var(--bg) 100%);
+      color: var(--text);
+      line-height: 1.6;
     }
 
+    a { color: inherit; }
+
     .site-header {
-      background: #0a2e3f;
-      color: white;
-      padding: 0.9rem 2rem;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--line);
     }
 
     .header-inner {
-      max-width: 1300px;
+      max-width: 1200px;
       margin: 0 auto;
+      padding: 0.85rem 1rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
       gap: 1rem;
     }
 
     .brand {
-      font-size: 1.7rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, #ffe6b3, #ffbc6e);
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.03em;
       text-decoration: none;
-      letter-spacing: -0.3px;
+      font-size: 1.5rem;
     }
 
     .top-nav {
       display: flex;
-      gap: 1.8rem;
+      gap: 0.5rem;
       flex-wrap: wrap;
     }
 
     .top-nav a {
-      color: #d9e9f0;
       text-decoration: none;
-      font-weight: 500;
-      transition: 0.2s;
-      padding-bottom: 4px;
+      color: var(--muted);
+      padding: 0.42rem 0.75rem;
+      border-radius: 10px;
+      transition: background-color var(--transition), color var(--transition);
     }
 
     .top-nav a.active,
-    .top-nav a:hover {
-      color: #ffb347;
-      border-bottom: 2px solid #ffb347;
+    .top-nav a:hover,
+    .top-nav a:focus-visible {
+      color: var(--text);
+      background: #eef2f7;
+      outline: none;
     }
 
     .container {
-      max-width: 1300px;
-      margin: 2rem auto;
-      padding: 0 1.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.2rem 1rem 2.2rem;
     }
 
-    .hero-panel {
-      background: white;
-      border-radius: 32px;
-      padding: 2rem 2rem;
+    /* hero-panel адаптирован под класс .hero из стилей */
+    .hero {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--card-shadow);
+      padding: 1.8rem 2rem;
       margin-bottom: 2rem;
-      box-shadow: 0 12px 24px -12px rgba(0, 0, 0, 0.08);
-      border: 1px solid #e2edf2;
     }
 
-    .hero-panel h1 {
-      font-size: 2.2rem;
+    .hero h1 {
+      margin: 0 0 0.6rem;
+      font-size: clamp(1.5rem, 2.5vw, 2.3rem);
       font-weight: 700;
-      background: linear-gradient(130deg, #1e5a72, #0a2e3f);
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
-      margin-bottom: 0.5rem;
     }
-
-    .hero-panel p {
-      color: #2c5a6e;
+    .hero p {
+      margin: 0;
+      color: var(--muted);
       font-size: 1.05rem;
     }
 
     .search-wrap {
       margin-bottom: 1.8rem;
     }
-
-    #treaty-search {
+    .search-wrap input {
       width: 100%;
-      padding: 1rem 1.3rem;
-      font-size: 1rem;
-      border: 1px solid #cbdbe0;
+      border: 1px solid var(--line);
       border-radius: 60px;
+      padding: 0.9rem 1.2rem;
+      font-size: 1rem;
       background: white;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
       transition: all 0.2s;
     }
-
-    #treaty-search:focus {
+    .search-wrap input:focus {
       outline: none;
-      border-color: #ff9f3d;
-      box-shadow: 0 0 0 4px rgba(255, 159, 61, 0.15);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(214, 64, 69, 0.1);
     }
 
     .treaties-list {
       display: flex;
       flex-direction: column;
-      gap: 1.3rem;
+      gap: 1rem;
     }
 
     .treaty-card {
-      background: white;
-      border-radius: 28px;
-      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.05);
-      border-left: 8px solid;
-      transition: all 0.2s;
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--card-shadow);
       overflow: hidden;
+      transition: transform var(--transition), box-shadow var(--transition);
+      border-left: 6px solid;
     }
 
-    /* цветовые акценты для договоров */
-    .treaty-card[data-color="blue"] { border-left-color: #2c7da0; }
+    .treaty-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Цветовые акценты */
+    .treaty-card[data-color="blue"] { border-left-color: var(--blue); }
     .treaty-card[data-color="red"] { border-left-color: #bc4e2c; }
-    .treaty-card[data-color="green"] { border-left-color: #2f855a; }
-    .treaty-card[data-color="purple"] { border-left-color: #8b5cf6; }
+    .treaty-card[data-color="green"] { border-left-color: var(--green); }
+    .treaty-card[data-color="purple"] { border-left-color: var(--purple); }
     .treaty-card[data-color="amber"] { border-left-color: #e67e22; }
 
     .accordion-toggle {
+      background: transparent;
+      border: none;
+      width: 100%;
+      text-align: left;
+      padding: 1rem 1.2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1.2rem 1.8rem;
       cursor: pointer;
-      background: #ffffff;
-      transition: background 0.2s;
-    }
-
-    .accordion-toggle:hover {
-      background: #fef8f0;
+      font: inherit;
     }
 
     .treaty-summary {
-      display: flex;
-      flex-direction: column;
-      gap: 0.2rem;
       flex: 1;
     }
 
     .treaty-name {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       font-weight: 700;
-      color: #0f2e3f;
+      color: var(--text);
       letter-spacing: -0.2px;
+      margin-bottom: 0.25rem;
     }
 
     .treaty-meta {
       display: flex;
       flex-wrap: wrap;
-      gap: 1.2rem;
+      gap: 0.8rem;
       margin-top: 0.3rem;
-      font-size: 0.9rem;
-      color: #567d92;
     }
 
     .treaty-meta span {
-      background: #eef3f8;
+      background: #f0f4f9;
       padding: 0.2rem 0.8rem;
       border-radius: 40px;
+      font-size: 0.85rem;
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      color: var(--muted);
     }
 
     .arrow {
-      font-size: 2rem;
-      color: #4b6f86;
-      transition: transform 0.25s;
+      color: var(--muted);
+      transition: transform var(--transition), color var(--transition);
+      font-size: 1.8rem;
+      display: flex;
+      align-items: center;
     }
 
-    .treaty-card.active .arrow i {
+    .treaty-card.active .arrow {
       transform: rotate(90deg);
+      color: var(--accent);
     }
 
     .accordion-content {
       max-height: 0;
       overflow: hidden;
-      transition: max-height 0.5s cubic-bezier(0.33, 1, 0.68, 1);
-      background: #fefefe;
-      border-top: 1px solid #e9f0f4;
+      border-top: 1px solid #edf1f6;
+      transition: max-height 0.4s cubic-bezier(0.33, 1, 0.68, 1);
     }
 
     .treaty-card.active .accordion-content {
-      max-height: 750px;
+      max-height: 800px;
     }
 
-    /* галерея изображений вместо текста */
+    /* === Дополнительные стили для визуальной галереи === */
     .visual-gallery {
-      padding: 1.8rem;
       display: flex;
       flex-wrap: wrap;
-      gap: 2rem;
+      gap: 1.8rem;
       justify-content: center;
       align-items: center;
-      background: #ffffff;
+      padding: 1.8rem;
+      background: #fefefe;
     }
 
     .vis-card {
@@ -242,7 +265,6 @@
       background: #f2f6f9;
       display: block;
       margin-bottom: 0.7rem;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.02);
     }
 
     .vis-caption {
@@ -262,6 +284,17 @@
       padding: 0.5rem;
     }
 
+    footer {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+      text-align: center;
+      border-top: 1px solid var(--line);
+      margin-top: 2rem;
+    }
+
     @media (max-width: 680px) {
       .visual-gallery {
         flex-direction: column;
@@ -272,25 +305,14 @@
         gap: 0.6rem;
       }
       .treaty-name {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
       }
       .arrow {
         align-self: center;
       }
-    }
-
-    footer {
-      background: #e2eef5;
-      text-align: center;
-      padding: 1.8rem;
-      margin-top: 3rem;
-      color: #2b5e7a;
-      font-size: 0.85rem;
-    }
-
-    .badge-icon {
-      font-size: 1rem;
-      vertical-align: middle;
+      .hero {
+        padding: 1.2rem;
+      }
     }
   </style>
 </head>
@@ -309,7 +331,7 @@
   </header>
 
   <main class="container">
-    <div class="hero-panel">
+    <div class="hero">
       <h1>Основные ядерные договоры</h1>
       <p>Хроника ограничений, разоружения и нераспространения. Нажмите на любой договор — внутри вас ждут визуальные материалы: исторические снимки, инфографика, схемы вооружений и карты.</p>
     </div>
@@ -330,7 +352,7 @@
               <span><i class='bx bx-shield'></i> Базовый столп нераспространения</span>
             </div>
           </div>
-          <span class="arrow"><i class='bx bx-chevron-right-circle' style="font-size: 28px;"></i></span>
+          <span class="arrow"><i class='bx bx-chevron-right-circle'></i></span>
         </div>
         <div class="accordion-content">
           <div class="visual-gallery">
@@ -482,7 +504,9 @@
     </section>
   </main>
 
-  <footer></footer>
+  <footer>
+    <p>© 2025 Архив ядерных договоров — историческая хроника ограничения вооружений</p>
+  </footer>
 
   <script>
     (function() {
@@ -533,4 +557,4 @@
   </script>
 </body>
 </html>
-
+```
